@@ -1,0 +1,696 @@
+/* ================================
+   Camera Page
+================================ */
+
+.camera-page {
+  min-height: 100vh;
+
+  padding: 30px 40px 110px;
+
+  background: #f6f8fb;
+  color: #303640;
+
+  box-sizing: border-box;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.camera-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+}
+
+.camera-title {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.camera-title-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #eef5ff;
+
+  font-size: 22px;
+}
+
+.camera-title h1 {
+  margin: 0 0 4px;
+
+  font-size: 22px;
+  font-weight: 800;
+
+  color: #303640;
+}
+
+.camera-title p {
+  margin: 0;
+
+  font-size: 11px;
+
+  color: #8a93a2;
+}
+
+
+/* ================================
+   LIVE
+================================ */
+
+.live-status {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 7px 11px;
+
+  border-radius: 8px;
+
+  background: #fff0f0;
+
+  color: #df5a5a;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #e85b5b;
+
+  animation: livePulse 1.5s infinite;
+}
+
+@keyframes livePulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* ================================
+   Camera Feed Card
+================================ */
+
+.camera-feed-card {
+  margin-bottom: 22px;
+
+  padding: 8px;
+
+  border: 1px solid #e4e8ee;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: 0 7px 24px rgba(31, 41, 55, 0.05);
+
+  box-sizing: border-box;
+}
+
+.camera-feed {
+  position: relative;
+
+  width: 100%;
+
+  height: 430px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #20242b;
+
+  box-sizing: border-box;
+
+  transition: box-shadow 0.25s ease;
+}
+
+.camera-feed-danger {
+  box-shadow:
+    inset 0 0 0 3px rgba(223, 90, 90, 0.7);
+}
+
+
+/* ================================
+   Real Camera
+================================ */
+
+.camera-video-container {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 13px;
+
+  background: #111;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/* ================================
+   AI Badge
+================================ */
+
+.ai-camera-badge {
+  position: absolute;
+
+  top: 15px;
+  left: 15px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 7px 10px;
+
+  border-radius: 8px;
+
+  background: rgba(17, 24, 39, 0.72);
+
+  color: #ffffff;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  backdrop-filter: blur(5px);
+}
+
+.ai-pulse {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #4fd39a;
+
+  animation: aiPulse 1.2s infinite;
+}
+
+@keyframes aiPulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* ================================
+   Camera Overlay
+================================ */
+
+.camera-overlay {
+  position: absolute;
+
+  left: 15px;
+  right: 15px;
+  bottom: 13px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #ffffff;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ================================
+   Current Posture HUD
+================================ */
+
+.camera-posture-hud {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  min-width: 100px;
+
+  padding: 9px 11px;
+
+  border-radius: 9px;
+
+  background: rgba(17, 24, 39, 0.72);
+
+  backdrop-filter: blur(5px);
+
+  text-align: right;
+
+  color: #ffffff;
+}
+
+.camera-posture-hud span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 8px;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.camera-posture-hud strong {
+  font-size: 11px;
+}
+
+
+/* ================================
+   Camera Section
+================================ */
+
+.camera-section {
+  margin-bottom: 20px;
+}
+
+.camera-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 11px;
+}
+
+.camera-section-header h2 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  color: #303640;
+}
+
+.analysis-running {
+  padding: 5px 9px;
+
+  border-radius: 7px;
+
+  background: #effaf5;
+
+  color: #35a878;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.analysis-danger {
+  background: #fff0f0;
+
+  color: #df5a5a;
+}
+
+
+/* ================================
+   AI Analysis
+================================ */
+
+.camera-analysis-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.camera-analysis-card {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 16px;
+
+  border: 1px solid #e5e9ee;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(31, 41, 55, 0.03);
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.analysis-card-danger {
+  border-color: #f1b3b3;
+
+  box-shadow:
+    0 4px 18px rgba(223, 90, 90, 0.08);
+}
+
+.camera-analysis-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f5f7fa;
+
+  font-size: 18px;
+}
+
+.camera-analysis-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.camera-analysis-card span {
+  font-size: 9px;
+
+  color: #8a93a2;
+}
+
+.camera-analysis-card strong {
+  font-size: 12px;
+}
+
+.status-normal {
+  color: #35a878;
+}
+
+.risk-normal {
+  color: #35a878;
+}
+
+.warning-text {
+  color: #d79535;
+}
+
+.danger-text {
+  color: #df5a5a;
+}
+
+.status-warning {
+  color: #d79535;
+}
+
+
+/* ================================
+   Current Safety Status
+================================ */
+
+.camera-current-status {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 18px;
+
+  border: 1px solid #dceee5;
+  border-radius: 14px;
+
+  background: #f7fcf9;
+
+  box-sizing: border-box;
+
+  transition: all 0.25s ease;
+}
+
+.current-status-danger {
+  border-color: #f1c1c1;
+
+  background: #fff7f7;
+}
+
+.current-status-warning {
+  border-color: #f1dfb8;
+
+  background: #fffaf0;
+}
+
+.current-status-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  font-size: 22px;
+
+  box-shadow:
+    0 3px 10px rgba(31, 41, 55, 0.05);
+}
+
+.current-status-text {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.current-status-text span {
+  font-size: 9px;
+
+  color: #8a93a2;
+}
+
+.current-status-text strong {
+  font-size: 13px;
+
+  color: #303640;
+}
+
+.current-status-text p {
+  margin: 0;
+
+  font-size: 9px;
+
+  color: #8a93a2;
+}
+
+
+/* ================================
+   System Status
+================================ */
+
+.camera-system-card {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  border: 1px solid #e5e9ee;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(31, 41, 55, 0.03);
+
+  overflow: hidden;
+}
+
+.camera-system-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 15px 18px;
+
+  border-right: 1px solid #edf0f3;
+}
+
+.camera-system-item:last-child {
+  border-right: none;
+}
+
+.camera-system-item span {
+  font-size: 11px;
+
+  color: #687282;
+}
+
+.camera-system-item strong {
+  font-size: 10px;
+}
+
+
+/* ================================
+   Last Update
+================================ */
+
+.camera-last-update {
+  margin-top: 8px;
+
+  text-align: right;
+
+  font-size: 8px;
+
+  color: #a1a8b2;
+}
+
+
+/* ================================
+   Bottom Space
+================================ */
+
+.camera-bottom-space {
+  height: 20px;
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 850px) {
+  .camera-page {
+    padding: 25px 25px 105px;
+  }
+
+  .camera-analysis-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-system-card {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-system-item {
+    border-right: none;
+    border-bottom: 1px solid #edf0f3;
+  }
+
+  .camera-system-item:last-child {
+    border-bottom: none;
+  }
+
+  .camera-feed {
+    height: 380px;
+  }
+}
+
+
+@media (max-width: 650px) {
+  .camera-page {
+    padding: 20px 17px 105px;
+  }
+
+  .camera-header {
+    align-items: flex-start;
+  }
+
+  .camera-title h1 {
+    font-size: 20px;
+  }
+
+  .camera-title p {
+    font-size: 10px;
+  }
+
+  .live-status {
+    margin-top: 2px;
+  }
+
+  .camera-feed {
+    height: 300px;
+  }
+
+  .camera-posture-hud {
+    top: 12px;
+    right: 12px;
+  }
+}
+
+
+@media (max-width: 450px) {
+  .camera-page {
+    padding: 18px 14px 105px;
+  }
+
+  .camera-title-icon {
+    width: 42px;
+    height: 42px;
+
+    font-size: 19px;
+  }
+
+  .camera-title h1 {
+    font-size: 18px;
+  }
+
+  .camera-feed {
+    height: 250px;
+  }
+
+  .camera-analysis-card {
+    padding: 14px;
+  }
+
+  .camera-current-status {
+    padding: 15px;
+  }
+}

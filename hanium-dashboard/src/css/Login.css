@@ -1,0 +1,381 @@
+/* ================================
+   Login / Start Page
+   SIDS 안심 케어
+================================ */
+
+
+/* ================================
+   Page
+================================ */
+
+.loginPage {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  background: #f6f8fb;
+
+  color: #303640;
+}
+
+
+/* ================================
+   Container
+================================ */
+
+.loginContainer {
+  width: 100%;
+  max-width: 430px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: loginFadeIn 0.6s ease forwards;
+}
+
+
+/* ================================
+   Logo
+================================ */
+
+.loginLogo {
+  width: 76px;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 22px;
+
+  background: #eef5ff;
+
+  color: #6288b8;
+
+  font-size: 32px;
+
+  box-shadow:
+    0 6px 22px rgba(31, 41, 55, 0.04);
+}
+
+
+/* ================================
+   Title
+================================ */
+
+.loginTitle {
+  text-align: center;
+
+  margin-bottom: 28px;
+}
+
+.loginTitle h1 {
+  margin: 0 0 6px;
+
+  font-size: 28px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
+
+  color: #303640;
+}
+
+.loginTitle p {
+  margin: 0;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+
+  color: #8a93a2;
+}
+
+
+/* ================================
+   Main Card
+================================ */
+
+.qrCard {
+  width: 100%;
+
+  padding: 30px 28px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #e5e9ee;
+
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  text-align: center;
+
+  box-shadow:
+    0 6px 22px rgba(31, 41, 55, 0.04);
+}
+
+
+/* ================================
+   Card Icon
+================================ */
+
+.qrIcon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 16px;
+
+  border-radius: 15px;
+
+  background: #f0f6ff;
+
+  color: #6288b8;
+
+  font-size: 23px;
+}
+
+
+/* ================================
+   Card Title
+================================ */
+
+.qrCard h2 {
+  margin: 0 0 8px;
+
+  font-size: 19px;
+
+  font-weight: 800;
+
+  color: #303640;
+}
+
+.qrCard > p {
+  margin: 0 0 22px;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+
+  color: #8a93a2;
+}
+
+
+/* ================================
+   System Status
+================================ */
+
+.startStatus {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin: 0 auto 20px;
+
+  padding: 8px 12px;
+
+  border-radius: 8px;
+
+  background: #effaf5;
+
+  color: #35a878;
+
+  font-size: 9px;
+
+  font-weight: 800;
+}
+
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #35a878;
+
+  animation: statusPulse 1.8s ease-in-out infinite;
+}
+
+
+/* ================================
+   Start Button
+================================ */
+
+.qrButton {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 13px 16px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #eef5ff;
+
+  color: #6288b8;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.qrButton:hover {
+  background: #e4effc;
+
+  transform: translateY(-1px);
+}
+
+.qrButton:active {
+  transform: scale(0.98);
+}
+
+.qrButton svg {
+  font-size: 10px;
+}
+
+
+/* ================================
+   Notice
+================================ */
+
+.loginNotice {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 20px;
+
+  text-align: center;
+
+  color: #8a93a2;
+
+  font-size: 9px;
+
+  line-height: 1.6;
+}
+
+.loginNotice svg {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  color: #6288b8;
+
+  font-size: 11px;
+}
+
+
+/* ================================
+   Animation
+================================ */
+
+@keyframes loginFadeIn {
+  from {
+    opacity: 0;
+
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.45;
+
+    transform: scale(0.85);
+  }
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 500px) {
+
+  .loginPage {
+    padding: 25px 16px;
+  }
+
+
+  .loginLogo {
+    width: 68px;
+    height: 68px;
+
+    font-size: 28px;
+  }
+
+
+  .loginTitle {
+    margin-bottom: 22px;
+  }
+
+
+  .loginTitle h1 {
+    font-size: 25px;
+  }
+
+
+  .loginTitle p {
+    font-size: 11px;
+  }
+
+
+  .qrCard {
+    padding: 25px 20px;
+
+    border-radius: 18px;
+  }
+
+
+  .qrIcon {
+    width: 48px;
+    height: 48px;
+
+    font-size: 21px;
+  }
+}

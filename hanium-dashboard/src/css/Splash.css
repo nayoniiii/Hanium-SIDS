@@ -1,0 +1,420 @@
+/* ======================================
+   BabyGuard AI
+   Splash Screen
+====================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Pretendard","Noto Sans KR",sans-serif;
+}
+
+body{
+    background:#F5F9FF;
+}
+
+/* ======================================
+   Splash
+====================================== */
+
+.splash{
+
+    position:relative;
+
+    width:100%;
+
+    min-height:100vh;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(
+        180deg,
+        #EEF7FF 0%,
+        #D8ECFF 55%,
+        #C4E4FF 100%
+    );
+
+}
+
+/* ======================================
+   Background Circle
+====================================== */
+
+.circle{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(10px);
+
+    animation:float 8s ease-in-out infinite;
+
+}
+
+.circle1{
+
+    width:420px;
+
+    height:420px;
+
+    background:rgba(255,255,255,.45);
+
+    top:-120px;
+
+    left:-130px;
+
+}
+
+.circle2{
+
+    width:320px;
+
+    height:320px;
+
+    background:rgba(74,144,226,.15);
+
+    right:-80px;
+
+    bottom:-80px;
+
+    animation-delay:2s;
+
+}
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(25px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+/* ======================================
+   Logo
+====================================== */
+
+.logoContainer{
+
+    animation:logoFloat 2.8s ease-in-out infinite;
+
+    z-index:2;
+
+}
+
+@keyframes logoFloat{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+.shield{
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:35px;
+
+    background:white;
+
+    box-shadow:
+
+    0 15px 40px rgba(74,144,226,.18);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:55px;
+
+    color:#4A90E2;
+
+    position:relative;
+
+}
+
+/* Heart */
+
+.heart{
+
+    position:absolute;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#FF5A76;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:20px;
+
+    right:-8px;
+
+    bottom:-8px;
+
+    box-shadow:
+
+    0 10px 20px rgba(255,90,118,.35);
+
+    animation:heartBeat 1.2s infinite;
+
+}
+
+@keyframes heartBeat{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    25%{
+
+        transform:scale(1.18);
+
+    }
+
+    45%{
+
+        transform:scale(1);
+
+    }
+
+    65%{
+
+        transform:scale(1.15);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* ======================================
+   Text
+====================================== */
+
+.title{
+
+    margin-top:45px;
+
+    font-size:42px;
+
+    font-weight:700;
+
+    color:#1F2937;
+
+    letter-spacing:.5px;
+
+}
+
+.subtitle{
+
+    margin-top:12px;
+
+    color:#5C6F82;
+
+    font-size:18px;
+
+    font-weight:500;
+
+}
+
+.slogan{
+
+    margin-top:18px;
+
+    color:#4A90E2;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    letter-spacing:.4px;
+
+}
+
+/* ======================================
+   Loading
+====================================== */
+
+.loading{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:70px;
+
+}
+
+.loading span{
+
+    width:14px;
+
+    height:14px;
+
+    border-radius:50%;
+
+    background:#4A90E2;
+
+    animation:loading 1.3s infinite;
+
+}
+
+.loading span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.loading span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+@keyframes loading{
+
+    0%{
+
+        transform:translateY(0);
+
+        opacity:.4;
+
+    }
+
+    50%{
+
+        transform:translateY(-10px);
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+        opacity:.4;
+
+    }
+
+}
+
+/* ======================================
+   Footer
+====================================== */
+
+.version{
+
+    position:absolute;
+
+    bottom:35px;
+
+    color:#7A8A99;
+
+    font-size:14px;
+
+    letter-spacing:1px;
+
+}
+
+/* ======================================
+   Mobile
+====================================== */
+
+@media(max-width:480px){
+
+.title{
+
+    font-size:34px;
+
+}
+
+.subtitle{
+
+    font-size:16px;
+
+}
+
+.slogan{
+
+    font-size:15px;
+
+}
+
+.shield{
+
+    width:105px;
+
+    height:105px;
+
+    font-size:48px;
+
+}
+
+.heart{
+
+    width:36px;
+
+    height:36px;
+
+}
+
+}

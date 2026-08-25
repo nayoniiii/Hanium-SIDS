@@ -1,0 +1,1180 @@
+/* ================================
+   Emergency Page
+================================ */
+
+.emergency-page {
+  min-height: 100vh;
+
+  padding: 30px 40px 40px;
+
+  background: #f6f8fb;
+  color: #303640;
+
+  box-sizing: border-box;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.emergency-header {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 25px;
+}
+
+.emergency-logo {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #fff0f0;
+
+  font-size: 23px;
+
+  box-shadow: 0 4px 12px rgba(223, 90, 90, 0.08);
+}
+
+.emergency-header h1 {
+  margin: 0 0 4px;
+
+  font-size: 24px;
+  font-weight: 800;
+
+  color: #303640;
+}
+
+.emergency-header p {
+  margin: 0;
+
+  font-size: 11px;
+
+  color: #8a93a2;
+}
+
+
+/* ================================
+   Main Alert
+================================ */
+
+.emergency-alert-card {
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  margin-bottom: 25px;
+
+  padding: 23px;
+
+  border: 1px solid #e8ebef;
+  border-left: 5px solid #df5a5a;
+
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  box-shadow: 0 7px 25px rgba(31, 41, 55, 0.05);
+
+  box-sizing: border-box;
+}
+
+.alert-icon {
+  width: 55px;
+  height: 55px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #fff0f0;
+
+  color: #df4e4e;
+
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.alert-content {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.alert-label {
+  font-size: 10px;
+  font-weight: 700;
+
+  color: #df5a5a;
+}
+
+.alert-content h2 {
+  margin: 0;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: #343942;
+}
+
+.alert-content p {
+  margin: 0;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+
+  color: #8a93a2;
+}
+
+.risk-score {
+  flex-shrink: 0;
+
+  min-width: 75px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  padding-left: 18px;
+
+  border-left: 1px solid #edf0f3;
+}
+
+.risk-score span {
+  font-size: 10px;
+
+  color: #8a93a2;
+}
+
+.risk-score strong {
+  font-size: 25px;
+
+  color: #df4e4e;
+}
+
+
+/* ================================
+   Section
+================================ */
+
+.emergency-section {
+  margin-bottom: 20px;
+}
+
+.emergency-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 11px;
+}
+
+.emergency-section-title h2 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  color: #303640;
+}
+
+.emergency-section-title > span {
+  padding: 5px 9px;
+
+  border-radius: 7px;
+
+  background: #f1f3f6;
+
+  color: #737b87;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+
+/* ================================
+   Section Status
+================================ */
+
+.analysis-complete {
+  background: #effaf5 !important;
+
+  color: #35a878 !important;
+}
+
+.response-active {
+  background: #fff5e8 !important;
+
+  color: #df8a38 !important;
+}
+
+.response-complete {
+  background: #effaf5 !important;
+
+  color: #35a878 !important;
+}
+
+
+/* ================================
+   AI Analysis
+================================ */
+
+.analysis-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.analysis-card {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 16px;
+
+  border: 1px solid #e5e9ee;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(31, 41, 55, 0.03);
+
+  box-sizing: border-box;
+}
+
+.analysis-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f5f7fa;
+
+  font-size: 18px;
+}
+
+.analysis-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.analysis-card span {
+  font-size: 9px;
+
+  color: #8a93a2;
+}
+
+.analysis-card strong {
+  font-size: 12px;
+}
+
+.danger-text {
+  color: #df4e4e;
+}
+
+.normal-text {
+  color: #35a878;
+}
+
+
+/* ================================
+   Response Progress Card
+================================ */
+
+.response-progress-card {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 8px;
+
+  padding: 24px 18px 20px;
+
+  border: 1px solid #e5e9ee;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 18px rgba(31, 41, 55, 0.04);
+
+  box-sizing: border-box;
+}
+
+
+/* ================================
+   Progress Line
+================================ */
+
+.progress-line {
+  position: absolute;
+
+  top: 45px;
+
+  left: 10%;
+
+  right: 10%;
+
+  height: 3px;
+
+  border-radius: 5px;
+
+  background: #e8edf1;
+
+  z-index: 0;
+
+  overflow: hidden;
+}
+
+.progress-line-fill {
+  height: 100%;
+
+  border-radius: 5px;
+
+  background: #35a878;
+
+  transition: width 0.6s ease;
+}
+
+
+/* ================================
+   Progress Step
+================================ */
+
+.progress-step {
+  position: relative;
+
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  min-width: 0;
+}
+
+.progress-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 9px;
+
+  border-radius: 50%;
+
+  background: #f1f3f6;
+
+  color: #a1a8b2;
+
+  border: 3px solid #ffffff;
+
+  box-shadow: 0 2px 8px rgba(31, 41, 55, 0.08);
+
+  font-size: 16px;
+
+  box-sizing: border-box;
+
+  transition:
+    all 0.35s ease;
+}
+
+.progress-step strong {
+  margin-bottom: 4px;
+
+  font-size: 10px;
+
+  color: #7f8792;
+
+  transition: color 0.3s ease;
+}
+
+.progress-step span {
+  font-size: 8px;
+
+  color: #a1a8b2;
+
+  white-space: nowrap;
+}
+
+
+/* ================================
+   Progress Waiting
+================================ */
+
+.progress-step.waiting .progress-icon {
+  background: #f3f5f7;
+
+  color: #b0b6bf;
+}
+
+.progress-step.waiting strong {
+  color: #858d98;
+}
+
+
+/* ================================
+   Progress Active
+================================ */
+
+.progress-step.active .progress-icon {
+  background: #fff3e4;
+
+  color: #df8a38;
+
+  border-color: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(223, 138, 56, 0.08),
+    0 3px 12px rgba(223, 138, 56, 0.15);
+
+  animation: activePulse 1.5s infinite;
+}
+
+.progress-step.active strong {
+  color: #df8a38;
+}
+
+.progress-step.active span {
+  color: #df8a38;
+}
+
+@keyframes activePulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.07);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* ================================
+   Progress Complete
+================================ */
+
+.progress-step.complete .progress-icon {
+  background: #effaf5;
+
+  color: #35a878;
+
+  box-shadow:
+    0 0 0 3px rgba(53, 168, 120, 0.06);
+}
+
+.progress-step.complete strong {
+  color: #35a878;
+}
+
+.progress-step.complete span {
+  color: #7f9f90;
+}
+
+
+/* ================================
+   Response Detail Card
+================================ */
+
+.response-card {
+  padding: 5px 18px;
+
+  border: 1px solid #e5e9ee;
+
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(31, 41, 55, 0.03);
+
+  box-sizing: border-box;
+}
+
+.response-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #edf0f3;
+}
+
+.response-item:last-child {
+  border-bottom: none;
+}
+
+.response-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f5f7fa;
+
+  font-size: 17px;
+}
+
+.response-info {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.response-info strong {
+  font-size: 12px;
+
+  color: #343942;
+}
+
+.response-info span {
+  font-size: 10px;
+
+  color: #8a93a2;
+}
+
+
+/* ================================
+   Response Status
+================================ */
+
+.response-status {
+  flex-shrink: 0;
+
+  padding: 6px 9px;
+
+  border-radius: 7px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  transition: all 0.3s ease;
+}
+
+.response-status.waiting {
+  background: #f1f3f6;
+
+  color: #8a93a2;
+}
+
+.response-status.active {
+  background: #fff3e6;
+
+  color: #df8a38;
+}
+
+.response-status.complete {
+  background: #effaf5;
+
+  color: #35a878;
+}
+
+
+/* ================================
+   Recovery
+================================ */
+
+.recovery-card {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 18px;
+
+  border: 1px solid #dfeee8;
+
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(31, 41, 55, 0.03);
+
+  box-sizing: border-box;
+
+  animation: recoveryAppear 0.45s ease;
+}
+
+@keyframes recoveryAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recovery-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #effaf5;
+
+  color: #35a878;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.recovery-info {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.recovery-info strong {
+  font-size: 12px;
+
+  color: #343942;
+}
+
+.recovery-info span {
+  font-size: 10px;
+
+  color: #8a93a2;
+}
+
+.recovery-button {
+  padding: 10px 15px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #35a878;
+
+  color: #ffffff;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.recovery-button:hover {
+  background: #2f956c;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 5px 15px rgba(53, 168, 120, 0.18);
+}
+
+
+/* ================================
+   Footer
+================================ */
+
+.emergency-footer {
+  padding-top: 20px;
+
+  text-align: center;
+}
+
+.emergency-footer span {
+  font-size: 9px;
+
+  color: #a0a6af;
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 950px) {
+
+  .response-progress-card {
+    grid-template-columns: repeat(5, minmax(90px, 1fr));
+
+    overflow-x: auto;
+  }
+
+  .progress-step {
+    min-width: 90px;
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .emergency-page {
+    padding: 25px 25px 35px;
+  }
+
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .response-progress-card {
+    grid-template-columns: 1fr;
+    gap: 0;
+
+    padding: 18px;
+  }
+
+  .progress-line {
+    top: 18px;
+    bottom: 18px;
+
+    left: 38px;
+    right: auto;
+
+    width: 3px;
+    height: auto;
+  }
+
+  .progress-line-fill {
+    width: 100% !important;
+    height: 0;
+
+    transition: height 0.6s ease;
+  }
+
+  .progress-step {
+    min-width: 0;
+
+    flex-direction: row;
+
+    text-align: left;
+
+    padding: 7px 0;
+
+    gap: 10px;
+  }
+
+  .progress-icon {
+    margin: 0;
+
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+  }
+
+  .progress-step strong {
+    margin: 0;
+
+    min-width: 75px;
+  }
+
+  .progress-step span {
+    white-space: normal;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .emergency-page {
+    padding: 20px 17px 30px;
+  }
+
+  .emergency-alert-card {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+
+    padding: 19px;
+  }
+
+  .alert-content {
+    width: calc(100% - 72px);
+  }
+
+  .risk-score {
+    width: 100%;
+
+    flex-direction: row;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    padding: 12px 0 0;
+
+    border-left: none;
+
+    border-top: 1px solid #edf0f3;
+  }
+
+  .risk-score strong {
+    font-size: 20px;
+  }
+
+  .response-item {
+    align-items: flex-start;
+  }
+
+  .response-status {
+    margin-left: auto;
+  }
+
+  .recovery-card {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+  .recovery-info {
+    width: calc(100% - 60px);
+  }
+
+  .recovery-button {
+    width: 100%;
+
+    margin-top: 5px;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .emergency-header h1 {
+    font-size: 21px;
+  }
+
+  .alert-content h2 {
+    font-size: 16px;
+  }
+
+  .alert-content p {
+    font-size: 10px;
+  }
+
+  .emergency-alert-card {
+    gap: 12px;
+  }
+
+  .alert-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .response-progress-card {
+    padding: 15px;
+  }
+
+}
+
+/* =================================
+   보호자 알림 / 알람
+================================= */
+
+.emergency-alarm-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-bottom: 20px;
+  padding: 16px 18px;
+
+  border-radius: 14px;
+
+  box-sizing: border-box;
+
+  transition: all 0.25s ease;
+}
+
+
+/* 알람 재생 중 */
+
+.emergency-alarm-card.alarm-active {
+  border: 1px solid #ffd6d6;
+
+  background: #fffafa;
+
+  box-shadow:
+    0 4px 16px rgba(220, 70, 70, 0.06);
+}
+
+
+/* 알람 종료 후 */
+
+.emergency-alarm-card.alarm-confirmed {
+  border: 1px solid #dceee6;
+
+  background: #fafffc;
+}
+
+
+/* =================================
+   알람 상태
+================================= */
+
+.alarm-status {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+
+.alarm-sound-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #fff0f0;
+
+  font-size: 18px;
+
+  animation: alarmPulse 1.2s infinite;
+}
+
+
+@keyframes alarmPulse {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
+
+.alarm-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.alarm-info strong {
+  font-size: 12px;
+
+  color: #343942;
+}
+
+
+.alarm-info span {
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  color: #8b929d;
+}
+
+
+/* =================================
+   보호자 확인 버튼
+================================= */
+
+.alarm-stop-button {
+  flex-shrink: 0;
+
+  padding: 10px 15px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #df5a5a;
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  box-shadow:
+    0 4px 10px rgba(223, 90, 90, 0.12);
+}
+
+
+.alarm-stop-button:hover {
+  background: #ca4949;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 14px rgba(223, 90, 90, 0.18);
+}
+
+
+.alarm-stop-button:active {
+  transform: translateY(0);
+}
+
+
+/* =================================
+   보호자 확인 완료
+================================= */
+
+.alarm-confirmed-content {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.alarm-confirmed-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #effaf5;
+
+  color: #35a878;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+
+/* =================================
+   모바일
+================================= */
+
+@media (max-width: 650px) {
+
+  .emergency-alarm-card {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 13px;
+  }
+
+
+  .alarm-status {
+    width: 100%;
+  }
+
+
+  .alarm-stop-button {
+    width: 100%;
+  }
+
+
+  .alarm-confirmed-content {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .emergency-alarm-card {
+    padding: 14px;
+  }
+
+
+  .alarm-info strong {
+    font-size: 11px;
+  }
+
+
+  .alarm-info span {
+    font-size: 9px;
+  }
+
+}

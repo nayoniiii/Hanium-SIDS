@@ -1,0 +1,546 @@
+/* ===========================
+   Bottom Navigation
+=========================== */
+
+.bottomNav{
+
+    position:fixed;
+
+    bottom:20px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:92%;
+
+    max-width:420px;
+
+    height:74px;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:24px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.12);
+
+    z-index:999;
+
+}
+
+/* ---------------------- */
+
+.navItem{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    text-decoration:none;
+
+    color:#8A96A8;
+
+    font-size:12px;
+
+    transition:.3s;
+
+}
+
+/* 아이콘 */
+
+.navItem svg{
+
+    font-size:21px;
+
+}
+
+/* Hover */
+
+.navItem:hover{
+
+    color:#4A90E2;
+
+    transform:translateY(-3px);
+
+}
+
+/* 현재 페이지 */
+
+.navItem.active{
+
+    position:relative;
+
+}
+
+.navItem.active::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-8px;
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#4A90E2;
+
+}
+
+.navItem.active svg{
+
+    transform:scale(1.15);
+
+}
+
+/* 아이콘 부드럽게 */
+
+.navItem svg{
+
+    transition:.3s;
+
+}
+
+/* =========================================
+   Navigation Item
+========================================= */
+
+.navItem{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    color:#9AA8B7;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+    width:70px;
+}
+
+.navItem svg{
+
+    font-size:24px;
+
+    transition:.3s;
+}
+
+.navItem span{
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+.navItem:hover{
+
+    transform:translateY(-3px);
+}
+
+.navItem.active{
+
+    color:var(--primary);
+}
+
+.navItem.active svg{
+
+    transform:scale(1.15);
+}
+
+/* =========================================
+   Header
+========================================= */
+
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.headerLeft h2{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:var(--text);
+}
+
+.headerLeft p{
+
+    color:var(--text-light);
+
+    margin-top:5px;
+}
+
+.profileBtn{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    box-shadow:var(--shadow-soft);
+
+    font-size:22px;
+
+    color:var(--primary);
+}
+
+/* =========================================
+   Status Grid
+========================================= */
+
+.statusGrid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+.statusCard{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:20px;
+
+    box-shadow:var(--shadow-card);
+
+    transition:.3s;
+}
+
+.statusCard:hover{
+
+    transform:translateY(-5px);
+}
+
+.statusIcon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:16px;
+
+    background:var(--primary-light);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+    color:var(--primary);
+
+    margin-bottom:14px;
+}
+
+.statusTitle{
+
+    font-size:14px;
+
+    color:var(--text-light);
+}
+
+.statusValue{
+
+    font-size:20px;
+
+    font-weight:700;
+
+    margin-top:8px;
+}
+
+/* =========================================
+   Camera Preview
+========================================= */
+
+.cameraPreview{
+
+    width:100%;
+
+    height:220px;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        135deg,
+        #DCEEFF,
+        #BFDFFF
+    );
+
+    position:relative;
+
+    margin-top:20px;
+
+    box-shadow:var(--shadow-card);
+}
+
+.cameraLive{
+
+    position:absolute;
+
+    top:15px;
+
+    left:15px;
+
+    background:#FF4D4F;
+
+    color:white;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+.cameraCenter{
+
+    position:absolute;
+
+    top:50%;
+
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    text-align:center;
+}
+
+.cameraIcon{
+
+    font-size:60px;
+
+    color:white;
+}
+
+.cameraText{
+
+    color:white;
+
+    margin-top:10px;
+
+    font-size:18px;
+
+    font-weight:600;
+}
+
+/* =========================================
+   Icon Button
+========================================= */
+
+.iconButton{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:18px;
+
+    background:white;
+
+    box-shadow:var(--shadow-soft);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    color:var(--primary);
+
+    transition:.3s;
+}
+
+.iconButton:hover{
+
+    transform:scale(1.08);
+}
+
+/* =========================================
+   AI Card
+========================================= */
+
+.aiCard{
+
+    background:
+    linear-gradient(
+        135deg,
+        #4A90E2,
+        #6DB4FF
+    );
+
+    border-radius:30px;
+
+    padding:24px;
+
+    color:white;
+
+    margin-top:20px;
+
+    box-shadow:
+    0 20px 40px rgba(74,144,226,.25);
+}
+
+.aiTitle{
+
+    font-size:14px;
+
+    opacity:.9;
+}
+
+.aiValue{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin-top:10px;
+}
+
+.aiStatus{
+
+    margin-top:12px;
+
+    font-size:15px;
+}
+
+/* =========================================
+   Floating Animation
+========================================= */
+
+.floatSlow{
+
+    animation:floatSlow 5s ease-in-out infinite;
+}
+
+@keyframes floatSlow{
+
+    0%{
+
+        transform:translateY(0px);
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+    }
+
+    100%{
+
+        transform:translateY(0px);
+    }
+
+}
+
+/* =========================================
+   Pulse
+========================================= */
+
+.pulseSoft{
+
+    animation:pulseSoft 2s infinite;
+}
+
+@keyframes pulseSoft{
+
+    0%{
+
+        transform:scale(1);
+    }
+
+    50%{
+
+        transform:scale(1.05);
+    }
+
+    100%{
+
+        transform:scale(1);
+    }
+
+}
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media(max-width:480px){
+
+.bottomNav{
+
+    height:75px;
+}
+
+.navItem svg{
+
+    font-size:22px;
+}
+
+.cameraPreview{
+
+    height:200px;
+}
+
+.statusCard{
+
+    padding:18px;
+}
+
+}
