@@ -16,8 +16,36 @@ function Camera() {
   const [serverConnected, setServerConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(null);
 
-  // 위험 자세 3초 타이머
-  const dangerTimerRef = useRef(null);
+  // =================================
+  // 위험 이벤트 처리
+  // =================================
+
+  // 같은 danger=True에 대해
+  // 화면/음성이 여러 번 실행되지 않도록 함
+  const dangerHandledRef = useRef(false);
+
+  // 음성 객체
+  const alarmRef = useRef(null);
+
+
+  // =================================
+  // 알람 음성 준비
+  // =================================
+
+  useEffect(() => {
+    alarmRef.current = new Audio("/sounds/alarm.mp3");
+
+    alarmRef.current.volume = 0.8;
+    alarmRef.current.preload = "auto";
+
+    return () => {
+      if (alarmRef.current) {
+        alarmRef.current.pause();
+        alarmRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
 
   // =================================
   // Flask 감지 결과 가져오기
@@ -36,13 +64,22 @@ function Camera() {
 
         const data = await response.json();
 
-        console.log("Flask 결과:", data);
+        console.log("📡 Flask 결과:", data);
 
+
+        // =================================
         // 서버 연결 상태
+        // =================================
+
         setServerConnected(true);
 
+
+        // =================================
         // YOLO 결과
+        // =================================
+
         setPosture(data.posture || "supine");
+
         setConfidence(
           typeof data.confidence === "number"
             ? data.confidence
@@ -51,45 +88,101 @@ function Camera() {
 
         setLastUpdate(new Date());
 
+
         // =================================
-        // 위험 자세 확인
+        // ★ 핵심
+        // Flask의 danger를 기준으로 판단
         // =================================
 
-        if (data.posture === "prone") {
-          // 아직 위험 타이머가 없다면 시작
-          if (!dangerTimerRef.current) {
-            console.log("⚠️ 위험 자세 시작");
+        if (data.danger === true) {
 
-            setIsDangerDetected(true);
+          setIsDangerDetected(true);
 
-            dangerTimerRef.current = setTimeout(() => {
-              console.log("🚨 위험 자세 3초 지속!");
 
-              sessionStorage.removeItem(
-                "sidsEmergencySaved"
-              );
+          // =================================
+          // 위험 확정 이벤트
+          // =================================
 
-              navigate("/emergency");
-            }, 3000);
+          if (!dangerHandledRef.current) {
+
+            console.log(
+              "🚨 위험 확정 신호 수신!"
+            );
+
+            console.log(
+              "🚨 Emergency 화면으로 이동"
+            );
+
+            dangerHandledRef.current = true;
+
+
+            // =================================
+            // 🔊 알람 음성
+            // =================================
+
+            if (alarmRef.current) {
+
+              try {
+
+                alarmRef.current.currentTime = 0;
+
+                alarmRef.current
+                  .play()
+                  .then(() => {
+                    console.log(
+                      "🔊 위험 알람 재생"
+                    );
+                  })
+                  .catch((error) => {
+
+                    console.warn(
+                      "⚠️ 알람 재생 실패:",
+                      error
+                    );
+
+                  });
+
+              } catch (error) {
+
+                console.error(
+                  "❌ 음성 재생 오류:",
+                  error
+                );
+
+              }
+            }
+
+
+            // =================================
+            // Emergency 화면 이동
+            // =================================
+
+            sessionStorage.removeItem(
+              "sidsEmergencySaved"
+            );
+
+            navigate("/emergency");
           }
+
         } else {
+
           // =================================
-          // 정상 자세로 돌아옴
+          // 안전 상태
           // =================================
-
-          if (dangerTimerRef.current) {
-            console.log("✅ 위험 자세 해제");
-
-            clearTimeout(dangerTimerRef.current);
-
-            dangerTimerRef.current = null;
-          }
 
           setIsDangerDetected(false);
+
+
+          // 다음 위험 이벤트를 받을 수 있도록
+          // 위험 처리 상태 초기화
+          dangerHandledRef.current = false;
         }
+
+
       } catch (error) {
+
         console.error(
-          "Flask 서버 연결 실패:",
+          "❌ Flask 서버 연결 실패:",
           error
         );
 
@@ -97,8 +190,10 @@ function Camera() {
       }
     };
 
+
     // 처음 실행
     fetchDetection();
+
 
     // 1초마다 Flask 확인
     const interval = setInterval(
@@ -106,22 +201,21 @@ function Camera() {
       1000
     );
 
+
     // 페이지 종료 시 정리
     return () => {
       clearInterval(interval);
-
-      if (dangerTimerRef.current) {
-        clearTimeout(dangerTimerRef.current);
-        dangerTimerRef.current = null;
-      }
     };
+
   }, [navigate]);
+
 
   // =================================
   // 자세 이름
   // =================================
 
   const getPostureText = () => {
+
     if (posture === "prone") {
       return "엎드린 자세";
     }
@@ -133,11 +227,13 @@ function Camera() {
     return "바로 누움";
   };
 
+
   // =================================
   // 위험도 상태
   // =================================
 
   const getRiskLevel = () => {
+
     if (posture === "prone") {
       return "위험";
     }
@@ -149,11 +245,13 @@ function Camera() {
     return "안전";
   };
 
+
   // =================================
   // 마지막 업데이트
   // =================================
 
   const getLastUpdateText = () => {
+
     if (!lastUpdate) {
       return "확인 중";
     }
@@ -161,13 +259,18 @@ function Camera() {
     return `${lastUpdate.getHours()
       .toString()
       .padStart(2, "0")}:${lastUpdate
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:${lastUpdate
-      .getSeconds()
-      .toString()
-      .padStart(2, "0")}`;
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}:${lastUpdate
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}`;
   };
+
+
+  // =================================
+  // 화면
+  // =================================
 
   return (
     <div className="camera-page">
@@ -185,6 +288,7 @@ function Camera() {
           </div>
 
           <div>
+
             <h1>
               실시간 AI 감지
             </h1>
@@ -192,9 +296,11 @@ function Camera() {
             <p>
               카메라 영상을 기반으로 아기의 자세를 실시간 분석합니다.
             </p>
+
           </div>
 
         </div>
+
 
         <div className="live-status">
 
@@ -224,7 +330,7 @@ function Camera() {
           <div className="camera-video-container">
 
             <img
-              src="http://192.168.137.95:5001/video"
+              src="http://192.168.137.95:8080/?action=stream"
               alt="실시간 카메라 영상"
               className="camera-video"
             />
@@ -248,9 +354,11 @@ function Camera() {
           <div className="camera-overlay">
 
             <span>
+
               {isDangerDetected
-                ? "⚠ 위험 자세 확인 중"
+                ? "⚠ 위험 자세 확정"
                 : "● AI 실시간 감지"}
+
             </span>
 
             <span>
@@ -298,9 +406,11 @@ function Camera() {
                 : ""
             }`}
           >
+
             {isDangerDetected
-              ? "⚠ 위험 확인 중"
+              ? "🚨 위험 확정"
               : "● 정상 분석 중"}
+
           </span>
 
         </div>
@@ -324,9 +434,11 @@ function Camera() {
               </span>
 
               <strong className="status-normal">
+
                 {serverConnected
                   ? "정상 작동"
                   : "연결 확인 중"}
+
               </strong>
 
             </div>
@@ -371,7 +483,7 @@ function Camera() {
           </div>
 
 
-          {/* Risk */}
+          {/* Confidence */}
 
           <div
             className={`camera-analysis-card ${
@@ -398,7 +510,9 @@ function Camera() {
                     : "risk-normal"
                 }
               >
+
                 {confidence.toFixed(1)}%
+
               </strong>
 
             </div>
@@ -445,24 +559,33 @@ function Camera() {
 
           </div>
 
+
           <div className="current-status-text">
 
             <span>
               현재 감지 상태
             </span>
 
+
             <strong>
+
               {posture === "prone"
                 ? "위험 자세가 감지되었습니다"
                 : posture === "side"
                   ? "주의가 필요한 자세입니다"
                   : "안전한 자세가 감지되고 있습니다"}
+
             </strong>
 
+
             <p>
+
               {posture === "prone"
-                ? "3초 이상 지속될 경우 긴급 알림이 발생합니다."
+                ? isDangerDetected
+                  ? "위험 자세가 확정되었습니다. 긴급 대응을 실행합니다."
+                  : "위험 자세를 확인하고 있습니다."
                 : "AI가 아기의 자세를 계속 확인하고 있습니다."}
+
             </p>
 
           </div>
@@ -528,9 +651,11 @@ function Camera() {
                   : "status-warning"
               }
             >
+
               {serverConnected
                 ? "연결됨"
                 : "연결 확인 중"}
+
             </strong>
 
           </div>

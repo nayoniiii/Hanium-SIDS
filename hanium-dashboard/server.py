@@ -2,27 +2,33 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime
 
+
 app = Flask(__name__)
 
 CORS(app)
 
 
-# =================================
-# 현재 AI 감지 결과 저장
-# =================================
+# ==========================================
+# 현재 시스템 상태
+# ==========================================
 
 latest_detection = {
+
     "posture": "supine",
+
     "confidence": 0,
+
     "danger": False,
+
     "pump": False,
+
     "timestamp": None
 }
 
 
-# =================================
+# ==========================================
 # 서버 상태 확인
-# =================================
+# ==========================================
 
 @app.route("/")
 def home():
@@ -30,9 +36,10 @@ def home():
     return "SIDS Server is running!"
 
 
-# =================================
+# ==========================================
+# Raspberry Pi → PC
 # YOLO 감지 결과 받기
-# =================================
+# ==========================================
 
 @app.route("/detection", methods=["POST"])
 def detection():
@@ -41,15 +48,47 @@ def detection():
 
     data = request.get_json()
 
-    posture = data.get("posture")
-    confidence = data.get("confidence", 0)
+    if data is None:
 
-    # 위험 여부
-    danger = data.get("danger", False)
+        return jsonify({
+            "status": "error",
+            "message": "No JSON data"
+        }), 400
 
-    # 펌프 작동 여부
-    pump = data.get("pump", False)
 
+    posture = data.get(
+        "posture",
+        "unknown"
+    )
+
+
+    confidence = float(
+        data.get(
+            "confidence",
+            0
+        )
+    )
+
+
+    danger = bool(
+        data.get(
+            "danger",
+            False
+        )
+    )
+
+
+    pump = bool(
+        data.get(
+            "pump",
+            False
+        )
+    )
+
+
+    # ======================================
+    # 최신 상태 저장
+    # ======================================
 
     latest_detection = {
 
@@ -65,41 +104,29 @@ def detection():
     }
 
 
-    print()
-    print("================================")
-    print("📷 YOLO 감지 결과")
-    print("================================")
+    # ======================================
+    # 터미널 출력
+    # ======================================
 
-    print(f"자세       : {posture}")
-    print(f"신뢰도     : {confidence}")
-
-    if danger:
-        print("위험 상태  : 🚨 위험")
-    else:
-        print("위험 상태  : ✅ 안전")
-
-    if pump:
-        print("방석 상태  : 💨 펌프 작동")
-    else:
-        print("방석 상태  : 대기")
-
-    print("================================")
-    print()
+    print(
+        f"📷 자세: {posture} "
+        f"| 신뢰도: {confidence:.1f}% "
+        f"| 위험: {' 위험' if danger else ' 정상'} "
+        f"| 펌프: {' ON' if pump else 'OFF'}"
+    )
 
 
     return jsonify({
 
         "status": "success",
 
-        "message": "Detection received",
-
         "data": latest_detection
     })
 
 
-# =================================
-# 현재 감지 결과 확인
-# =================================
+# ==========================================
+# React → 현재 상태 확인
+# ==========================================
 
 @app.route("/detection", methods=["GET"])
 def get_detection():
@@ -107,38 +134,18 @@ def get_detection():
     return jsonify(latest_detection)
 
 
-# =================================
-# 기존 위험 신호
-# =================================
-
-@app.route("/danger", methods=["POST"])
-def danger():
-
-    print("🚨 위험 감지 신호 받음!")
-
-
-    return jsonify({
-
-        "status": "success",
-
-        "message": "Danger signal received"
-    })
-
-
-# =================================
+# ==========================================
 # 서버 실행
-# =================================
+# ==========================================
 
 if __name__ == "__main__":
 
-    print()
     print("================================")
     print("SIDS SAFE AI SERVER")
     print("================================")
     print("Flask Server 시작")
     print("Port : 5000")
     print("================================")
-    print()
 
 
     app.run(

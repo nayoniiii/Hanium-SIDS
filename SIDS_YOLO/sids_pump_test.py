@@ -12,20 +12,36 @@ MODEL_PATH = "best.pt"
 
 
 # ==========================================
-# Arduino 설정
+# 라즈베리파이 카메라
 # ==========================================
 
-ARDUINO_IP = "192.168.137.229"
+RASPBERRY_PI_IP = "192.168.137.95"
 
-PUMP_ON_URL = f"http://{ARDUINO_IP}/pump/on"
-PUMP_OFF_URL = f"http://{ARDUINO_IP}/pump/off"
+CAMERA_URL = (
+    f"http://{RASPBERRY_PI_IP}:8080/?action=stream"
+)
 
 
 # ==========================================
-# Flask 서버 설정
+# Flask 서버
 # ==========================================
 
 SERVER_URL = "http://127.0.0.1:5000/detection"
+
+
+# ==========================================
+# Arduino 펌프
+# ==========================================
+
+ARDUINO_IP = "192.168.137.78"
+
+PUMP_ON_URL = (
+    f"http://{ARDUINO_IP}/pump/on"
+)
+
+PUMP_OFF_URL = (
+    f"http://{ARDUINO_IP}/pump/off"
+)
 
 
 # ==========================================
@@ -34,51 +50,18 @@ SERVER_URL = "http://127.0.0.1:5000/detection"
 
 DANGER_POSTURES = ["prone"]
 
-# 옆으로 누운 자세도 위험으로 추가하려면:
+# 옆으로 누운 자세까지 위험하게 하려면
 # DANGER_POSTURES = ["prone", "side"]
 
 
-# 위험 자세가 몇 초 지속되어야 하는지
-DANGER_TIME = 3
+# 위험 자세가 지속되어야 하는 시간
+DANGER_TIME = 3.0
 
-# 펌프를 몇 초 작동할지
-PUMP_TIME = 3
+# YOLO가 잠깐 자세를 놓쳐도 유지할 시간
+GRACE_TIME = 1.0
 
-# 위험 판정 confidence
+# YOLO 최소 신뢰도
 CONFIDENCE_THRESHOLD = 0.70
-
-
-# ==========================================
-# Flask 서버에 YOLO 상태 전송
-# ==========================================
-
-def send_detection(posture, confidence, danger, pump):
-
-    try:
-
-        data = {
-            "posture": posture,
-            "confidence": confidence,
-            "danger": danger,
-            "pump": pump
-        }
-
-        response = requests.post(
-            SERVER_URL,
-            json=data,
-            timeout=1
-        )
-
-        if response.status_code == 200:
-            return True
-
-        print("⚠️ Flask 서버 전송 실패")
-
-    except requests.exceptions.RequestException:
-        # 서버가 잠시 꺼져 있어도 YOLO와 펌프는 계속 작동하도록 함
-        pass
-
-    return False
 
 
 # ==========================================
@@ -91,7 +74,7 @@ def pump_on():
 
         response = requests.get(
             PUMP_ON_URL,
-            timeout=2
+            timeout=1
         )
 
         if response.status_code == 200:
@@ -100,11 +83,17 @@ def pump_on():
 
             return True
 
-        print("⚠️ 펌프 ON 요청 실패")
+        print(
+            "⚠️ 펌프 ON 요청 실패:",
+            response.status_code
+        )
 
     except requests.exceptions.RequestException as e:
 
-        print("❌ Arduino 연결 실패:", e)
+        print(
+            "❌ Arduino 연결 실패:",
+            e
+        )
 
     return False
 
@@ -119,7 +108,7 @@ def pump_off():
 
         response = requests.get(
             PUMP_OFF_URL,
-            timeout=2
+            timeout=1
         )
 
         if response.status_code == 200:
@@ -128,56 +117,148 @@ def pump_off():
 
             return True
 
-        print("⚠️ 펌프 OFF 요청 실패")
+        print(
+            "⚠️ 펌프 OFF 요청 실패:",
+            response.status_code
+        )
 
     except requests.exceptions.RequestException as e:
 
-        print("❌ Arduino 연결 실패:", e)
+        print(
+            "❌ Arduino 연결 실패:",
+            e
+        )
 
     return False
+
+
+# ==========================================
+# Flask 전송
+# ==========================================
+
+def send_detection(
+    posture,
+    confidence,
+    danger,
+    pump
+):
+
+    try:
+
+        data = {
+
+            "posture": posture,
+
+            "confidence": confidence * 100,
+
+            "danger": danger,
+
+            "pump": pump
+
+        }
+
+        response = requests.post(
+            SERVER_URL,
+            json=data,
+            timeout=1
+        )
+
+        if response.status_code == 200:
+
+            print(
+                f"📡 Flask 전송 성공 "
+                f"| 자세={posture} "
+                f"| danger={danger} "
+                f"| pump={pump}"
+            )
+
+        else:
+
+            print(
+                "⚠️ Flask 서버 전송 실패:",
+                response.status_code
+            )
+
+    except requests.exceptions.RequestException as e:
+
+        print(
+            "❌ Flask 서버 연결 실패:",
+            e
+        )
 
 
 # ==========================================
 # YOLO 모델
 # ==========================================
 
+print()
+print("YOLO 모델을 불러오는 중...")
+
 model = YOLO(MODEL_PATH)
 
-
-# ==========================================
-# 카메라
-# ==========================================
-
-cap = cv2.VideoCapture(0)
+print("✅ YOLO 모델 로딩 완료")
 
 
 # ==========================================
-# 위험 판단 변수
+# 카메라 연결
+# ==========================================
+
+print()
+print("라즈베리파이 카메라 연결 중...")
+print("Camera URL:", CAMERA_URL)
+
+cap = cv2.VideoCapture(CAMERA_URL)
+
+
+if not cap.isOpened():
+
+    print()
+    print("❌ 라즈베리파이 카메라 연결 실패")
+    print()
+    print("확인할 것:")
+    print("1. 라즈베리파이 전원이 켜져 있는지")
+    print("2. mjpg-streamer가 실행 중인지")
+    print("3. 라즈베리파이 IP가 맞는지")
+    print()
+
+    exit()
+
+
+print("✅ 라즈베리파이 카메라 연결 성공!")
+
+
+# ==========================================
+# 위험 상태 변수
 # ==========================================
 
 danger_start_time = None
 
-pump_running = False
+last_danger_detection_time = None
 
-pump_start_time = None
+danger_confirmed = False
+
+pump_running = False
 
 
 # ==========================================
 # 시작 메시지
 # ==========================================
 
+print()
 print("================================")
 print("SIDS SAFE AI")
-print("YOLO + Arduino + Flask")
+print("YOLO + Raspberry Pi Camera")
+print("+ Flask Server")
+print("+ Arduino Pump Controller")
 print("================================")
-
 print()
 
+print("라즈베리파이 :", RASPBERRY_PI_IP)
+print("Flask Server :", SERVER_URL)
 print("Arduino :", ARDUINO_IP)
-print("Flask   :", SERVER_URL)
 
-print("카메라 시작")
-
+print()
+print("🚀 SIDS SAFE AI 시작")
 print()
 
 
@@ -187,12 +268,18 @@ print()
 
 while True:
 
-    ret, frame = cap.read()
+    # ======================================
+    # 카메라 프레임
+    # ======================================
 
+    ret, frame = cap.read()
 
     if not ret:
 
-        print("카메라 프레임을 받을 수 없습니다.")
+        print(
+            "❌ 라즈베리파이 카메라 "
+            "프레임을 받을 수 없습니다."
+        )
 
         break
 
@@ -212,10 +299,13 @@ while True:
     confidence = 0
 
 
+    # ======================================
+    # YOLO 결과 확인
+    # ======================================
+
     for result in results:
 
         if result.boxes is None:
-
             continue
 
 
@@ -235,52 +325,61 @@ while True:
                 detected_posture = posture
 
 
-    # ======================================
-    # 결과 출력
-    # ======================================
-
-    if detected_posture is not None:
-
-        print(
-            f"자세: {detected_posture} "
-            f"| confidence: {confidence:.2f}"
-        )
-
-    else:
-
-        print("자세 감지 안 됨")
+    current_time = time.time()
 
 
     # ======================================
-    # 위험 자세 판단
+    # 현재 위험 자세인지 확인
     # ======================================
 
     is_danger = (
 
         detected_posture in DANGER_POSTURES
 
-        and confidence >= CONFIDENCE_THRESHOLD
+        and
+
+        confidence >= CONFIDENCE_THRESHOLD
 
     )
 
 
     # ======================================
-    # 위험 자세
+    # 위험 자세 감지
     # ======================================
 
     if is_danger:
 
+        print(
+            f"⚠️ 자세: {detected_posture} "
+            f"| confidence: {confidence:.2f}"
+        )
+
+
+        # ----------------------------------
+        # 위험 시작
+        # ----------------------------------
 
         if danger_start_time is None:
 
-            danger_start_time = time.time()
+            danger_start_time = current_time
 
+            print()
             print("⚠️ 위험 자세 감지 시작")
 
 
+        # 마지막으로 위험 자세를 본 시간
+        last_danger_detection_time = current_time
+
+
+        # ----------------------------------
+        # 위험 지속 시간
+        # ----------------------------------
+
         danger_duration = (
-            time.time()
+
+            current_time
             - danger_start_time
+
         )
 
 
@@ -291,24 +390,27 @@ while True:
 
 
         # ==================================
-        # 3초 이상 위험
+        # 3초 이상 위험하면 위험 확정
         # ==================================
 
         if danger_duration >= DANGER_TIME:
 
-
-            if not pump_running:
+            # 처음 위험 확정되는 순간
+            if not danger_confirmed:
 
                 print()
+                print("🚨🚨 위험 자세 확정 🚨🚨")
+                print("💨 방석 팽창 시작")
 
-                print(
-                    "🚨🚨 위험 자세 확정 🚨🚨"
-                )
+                danger_confirmed = True
 
-                print(
-                    "💨 방석 팽창 시작"
-                )
 
+            # ==================================
+            # 위험 자세가 계속되는 동안
+            # 펌프가 꺼져 있다면 ON
+            # ==================================
+
+            if not pump_running:
 
                 success = pump_on()
 
@@ -317,124 +419,156 @@ while True:
 
                     pump_running = True
 
-                    pump_start_time = time.time()
+                    print(
+                        "💨 위험 자세 유지 중"
+                    )
+
+                    print(
+                        "💨 펌프 계속 작동"
+                    )
+
+
+            # ==================================
+            # Flask
+            # ==================================
+
+            send_detection(
+
+                detected_posture,
+
+                confidence,
+
+                True,
+
+                pump_running
+
+            )
+
+
+        # ==================================
+        # 아직 3초 전
+        # ==================================
+
+        else:
+
+            send_detection(
+
+                detected_posture,
+
+                confidence,
+
+                True,
+
+                False
+
+            )
 
 
     # ======================================
-    # 안전한 자세
+    # 위험 자세가 아닌 경우
     # ======================================
 
     else:
 
-
-        if danger_start_time is not None:
+        if detected_posture is not None:
 
             print(
-                "✅ 위험 자세 해제"
+                f"✅ 자세: {detected_posture} "
+                f"| confidence: {confidence:.2f}"
+            )
+
+        else:
+
+            print(
+                "자세 감지 안 됨"
             )
 
 
-        danger_start_time = None
+        # ==================================
+        # 위험 상태였던 경우
+        # ==================================
+
+        if danger_confirmed:
+
+            # 마지막 위험 감지 이후 경과 시간
+            if last_danger_detection_time is not None:
+
+                missed_time = (
+
+                    current_time
+                    - last_danger_detection_time
+
+                )
 
 
-    # ======================================
-    # 펌프 작동 시간 확인
-    # ======================================
-
-    if pump_running:
-
-
-        pump_duration = (
-            time.time()
-            - pump_start_time
-        )
+                print(
+                    f"⏳ 위험 자세 확인 대기 "
+                    f"| {missed_time:.1f}초"
+                )
 
 
-        if pump_duration >= PUMP_TIME:
+                # ----------------------------------
+                # 1초 이상 위험 자세가 안 보이면
+                # 안전 상태로 판단
+                # ----------------------------------
+
+                if missed_time >= GRACE_TIME:
+
+                    print()
+                    print("✅ 안전 상태 확인")
+                    print("🛑 펌프 OFF")
 
 
-            print()
+                    # 펌프가 켜져 있다면 OFF
+                    if pump_running:
 
-            print(
-                "🛑 방석 팽창 시간 종료"
+                        pump_off()
+
+                        pump_running = False
+
+
+                    # 위험 상태 초기화
+                    danger_start_time = None
+
+                    last_danger_detection_time = None
+
+                    danger_confirmed = False
+
+
+                    # Flask에 안전 상태 전달
+                    send_detection(
+
+                        detected_posture
+                        if detected_posture is not None
+                        else "unknown",
+
+                        confidence,
+
+                        False,
+
+                        False
+
+                    )
+
+
+        else:
+
+            # 아직 위험 확정 전이면
+            # 안전 상태로 전송
+
+            send_detection(
+
+                detected_posture
+                if detected_posture is not None
+                else "unknown",
+
+                confidence,
+
+                False,
+
+                False
+
             )
-
-            print(
-                "펌프 OFF"
-            )
-
-
-            pump_off()
-
-
-            pump_running = False
-
-            pump_start_time = None
-
-
-    # ======================================
-    # Flask 서버로 현재 상태 전송
-    # ======================================
-
-    send_detection(
-
-        posture=detected_posture,
-
-        confidence=confidence,
-
-        danger=is_danger,
-
-        pump=pump_running
-
-    )
-
-
-    # ======================================
-    # 카메라 화면
-    # ======================================
-
-    cv2.imshow(
-        "SIDS SAFE AI",
-        frame
-    )
-
-
-    key = cv2.waitKey(1) & 0xFF
-
-
-    # ======================================
-    # 종료
-    # ======================================
-
-    if key == ord("q"):
-
-
-        print()
-
-        print(
-            "프로그램 종료"
-        )
-
-
-        pump_off()
-
-
-        # 서버에도 안전 상태 전달
-
-        send_detection(
-
-            posture="supine",
-
-            confidence=0,
-
-            danger=False,
-
-            pump=False
-
-        )
-
-
-        break
 
 
 # ==========================================
@@ -443,11 +577,13 @@ while True:
 
 cap.release()
 
-cv2.destroyAllWindows()
 
-pump_off()
+if pump_running:
+
+    pump_off()
 
 
-print(
-    "프로그램 종료 완료"
-)
+print()
+print("================================")
+print("SIDS SAFE AI 종료 완료")
+print("================================")

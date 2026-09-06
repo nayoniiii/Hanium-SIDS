@@ -5,10 +5,8 @@
 .home-page {
   min-height: 100vh;
   padding: 28px 40px 105px;
-
   background: #f6f8fb;
   color: #303640;
-
   box-sizing: border-box;
 }
 
@@ -24,37 +22,36 @@
 .home-brand {
   display: flex;
   align-items: center;
-
   gap: 12px;
 }
 
 .home-brand-icon {
   width: 45px;
   height: 45px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 13px;
-
   background: #eef5ff;
-
   font-size: 21px;
+  overflow: hidden;
+}
+
+.home-brand-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .home-brand h1 {
   margin: 0 0 3px;
-
   font-size: 21px;
   font-weight: 800;
 }
 
 .home-brand p {
   margin: 0;
-
   font-size: 10px;
-
   color: #8a93a2;
 }
 
@@ -67,42 +64,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 18px;
-
   padding: 2px 4px;
 }
 
 .welcome-text h2 {
   margin: 0 0 5px;
-
   font-size: 17px;
   font-weight: 800;
-
   color: #303640;
 }
 
 .welcome-text p {
   margin: 0;
-
   font-size: 10px;
-
   color: #8a93a2;
-}
-
-.welcome-icon {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 13px;
-
-  background: #f0f6ff;
-
-  font-size: 19px;
 }
 
 
@@ -118,7 +94,6 @@
   min-height: 145px;
 
   padding: 24px 27px;
-
   margin-bottom: 18px;
 
   border: 1px solid #e5e9ee;
@@ -129,41 +104,120 @@
   box-shadow: 0 6px 22px rgba(31, 41, 55, 0.04);
 
   box-sizing: border-box;
+
+  transition: 0.25s;
 }
+
+
+/* 위험 상태일 때 */
+
+.home-status-card:has(.status-danger) {
+  border-color: #f0caca;
+  background: #fffafa;
+}
+
 
 .home-status-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
+
 
 .home-status-label {
   margin-bottom: 7px;
-
   font-size: 10px;
-
   color: #8a93a2;
 }
 
+
 .home-status-info h2 {
   margin: 0 0 7px;
-
   font-size: 20px;
   font-weight: 800;
 }
 
-.home-status-info p {
-  margin: 0;
 
+.home-status-info > p {
+  margin: 0 0 12px;
   font-size: 10px;
-
   color: #7f8896;
 }
+
 
 .status-normal {
   color: #35a878;
 }
 
+
 .status-danger {
+  color: #df5a5a;
+}
+
+
+/* ================================
+   AI 정보
+================================ */
+
+.home-ai-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+
+.home-ai-info > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px 9px;
+
+  border-radius: 8px;
+
+  background: #f7f9fc;
+}
+
+
+.home-ai-info span {
+  font-size: 8px;
+  color: #929aa7;
+}
+
+
+.home-ai-info strong {
+  font-size: 9px;
+  color: #536273;
+}
+
+
+/* ================================
+   Pump 상태
+================================ */
+
+.home-pump-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: 8px;
+}
+
+
+.home-pump-status span {
+  font-size: 8px;
+  color: #929aa7;
+}
+
+
+.home-pump-status strong {
+  font-size: 9px;
+  color: #35a878;
+}
+
+
+.home-status-card:has(.status-danger) .home-pump-status strong {
   color: #df5a5a;
 }
 
@@ -176,6 +230,8 @@
   width: 95px;
   height: 95px;
 
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,16 +241,19 @@
   background: #f5f8fc;
 
   overflow: hidden;
+
+  margin-left: 18px;
 }
+
 
 .home-status-placeholder {
   font-size: 47px;
 }
 
+
 .home-status-image img {
   width: 78px;
   height: 78px;
-
   object-fit: contain;
 }
 
@@ -205,7 +264,6 @@
 
 .home-main-grid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
 
   gap: 16px;
@@ -233,6 +291,7 @@
   box-sizing: border-box;
 }
 
+
 .home-panel-header {
   display: flex;
   align-items: center;
@@ -241,12 +300,14 @@
   margin-bottom: 15px;
 }
 
+
 .home-panel-header h2 {
   margin: 0;
 
   font-size: 14px;
   font-weight: 700;
 }
+
 
 .system-live {
   padding: 5px 8px;
@@ -273,6 +334,7 @@
   gap: 8px;
 }
 
+
 .home-system-item {
   display: flex;
   align-items: center;
@@ -286,11 +348,16 @@
   background: #f8f9fb;
 
   box-sizing: border-box;
+
+  transition: 0.2s;
 }
+
 
 .system-item-icon {
   width: 32px;
   height: 32px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -303,6 +370,7 @@
   font-size: 14px;
 }
 
+
 .home-system-item > div:nth-child(2) {
   display: flex;
   flex-direction: column;
@@ -310,24 +378,49 @@
   flex: 1;
 
   gap: 3px;
+
+  min-width: 0;
 }
+
 
 .home-system-item strong {
   font-size: 10px;
 }
 
+
 .home-system-item span {
   font-size: 8px;
-
   color: #929aa7;
 }
 
+
 .home-system-item b {
   font-size: 8px;
+  white-space: nowrap;
 }
+
 
 .system-ok {
   color: #35a878;
+}
+
+
+/* 위험 */
+
+.system-danger {
+  color: #df5a5a;
+}
+
+
+/* 위험 상태의 AI / 펌프 */
+
+.home-system-item:has(.system-danger) {
+  background: #fff6f6;
+}
+
+
+.home-system-item:has(.system-danger) .system-item-icon {
+  background: #fff0f0;
 }
 
 
@@ -357,6 +450,7 @@
   transition: 0.2s;
 }
 
+
 .home-camera-button:hover {
   background: #e4effc;
 }
@@ -381,6 +475,7 @@
   cursor: pointer;
 }
 
+
 .home-recent-history {
   display: flex;
   align-items: center;
@@ -397,6 +492,7 @@
 
   box-sizing: border-box;
 }
+
 
 .recent-history-icon {
   width: 40px;
@@ -415,6 +511,7 @@
   font-size: 17px;
 }
 
+
 .recent-history-info {
   display: flex;
   flex-direction: column;
@@ -426,38 +523,44 @@
   gap: 4px;
 }
 
+
 .recent-history-info strong {
   font-size: 10px;
 }
 
+
 .recent-history-info span {
   font-size: 8px;
-
   color: #8b939f;
 }
+
 
 .recent-history-info small {
   font-size: 8px;
 
   color: #df5a5a;
+
   font-weight: 700;
 }
+
 
 .recent-history-time {
   display: flex;
   flex-direction: column;
+
   align-items: flex-end;
 
   gap: 3px;
 }
 
+
 .recent-history-time strong {
   font-size: 9px;
 }
 
+
 .recent-history-time span {
   font-size: 8px;
-
   color: #9ba2ad;
 }
 
@@ -471,6 +574,7 @@
 
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
 
@@ -480,6 +584,7 @@
 
   text-align: center;
 }
+
 
 .history-empty-check {
   width: 35px;
@@ -501,11 +606,13 @@
   font-weight: 800;
 }
 
+
 .home-history-empty strong {
   margin-bottom: 4px;
 
   font-size: 10px;
 }
+
 
 .home-history-empty span {
   font-size: 8px;
@@ -530,11 +637,15 @@
   border-radius: 12px;
 
   background: #f3f7fc;
+
+  transition: 0.25s;
 }
+
 
 .home-message > span {
   font-size: 19px;
 }
+
 
 .home-message strong {
   display: block;
@@ -546,12 +657,33 @@
   color: #52677e;
 }
 
+
 .home-message p {
   margin: 0;
 
   font-size: 8px;
 
   color: #7f8c9b;
+}
+
+
+/* ================================
+   위험 모드
+================================ */
+
+.home-danger-mode .home-message {
+  border-color: #f0cccc;
+  background: #fff5f5;
+}
+
+
+.home-danger-mode .home-message strong {
+  color: #c95a5a;
+}
+
+
+.home-danger-mode .home-status-image {
+  background: #fff1f1;
 }
 
 
@@ -564,6 +696,7 @@
   .home-page {
     padding: 24px 25px 105px;
   }
+
 
   .home-main-grid {
     grid-template-columns: 1fr;
@@ -578,38 +711,60 @@
     padding: 20px 16px 105px;
   }
 
+
   .home-welcome {
     margin-bottom: 15px;
   }
+
 
   .welcome-text h2 {
     font-size: 16px;
   }
 
+
   .welcome-text p {
     font-size: 9px;
   }
 
+
   .home-status-card {
-    padding: 20px;
+    padding: 18px;
   }
+
 
   .home-status-info h2 {
     font-size: 17px;
   }
 
+
   .home-status-image {
     width: 78px;
     height: 78px;
+
+    margin-left: 10px;
   }
+
 
   .home-status-placeholder {
     font-size: 38px;
   }
 
+
   .home-status-image img {
     width: 65px;
     height: 65px;
+  }
+
+
+  .home-ai-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+
+  .home-ai-info > div {
+    padding: 5px 8px;
   }
 
 }
