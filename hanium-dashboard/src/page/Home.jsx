@@ -119,7 +119,7 @@ function Home() {
 
   const confidence =
     Math.round(
-      Number(aiData.confidence || 0) * 100
+      Number(aiData.confidence || 0)
     );
 
 

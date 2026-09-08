@@ -330,7 +330,7 @@ function Camera() {
           <div className="camera-video-container">
 
             <img
-              src="http://192.168.137.95:8080/?action=stream"
+              src="http://192.168.137.95:5001/video"
               alt="실시간 카메라 영상"
               className="camera-video"
             />
