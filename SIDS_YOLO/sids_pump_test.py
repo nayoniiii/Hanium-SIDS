@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 import requests
+import threading
 import time
 import cv2
 
@@ -42,6 +43,20 @@ PUMP_ON_URL = (
 PUMP_OFF_URL = (
     f"http://{ARDUINO_IP}/pump/off"
 )
+
+
+# ==========================================
+# 폰 푸시 알림 (ntfy)
+# ==========================================
+
+# 폰의 ntfy 앱에서 구독한 채널 이름과 똑같이 적기
+# 다른 사람이 추측하지 못하게 길고 랜덤하게 정하기
+NTFY_TOPIC = "sids-safe-hy7k2m9q"
+
+NTFY_URL = "https://ntfy.sh/"
+
+# 위험이 계속되는 동안 몇 초마다 알림을 다시 보낼지
+PUSH_REPEAT_INTERVAL = 10.0
 
 
 # ==========================================
@@ -133,6 +148,93 @@ def pump_off():
 
 
 # ==========================================
+# 폰 푸시 알림 보내기
+# ==========================================
+
+def _send_push(posture, confidence, count, elapsed):
+
+    if count == 1:
+
+        title = "🚨 SIDS SAFE 위험 감지"
+
+        message = (
+            f"아기가 위험 자세({posture})로 "
+            f"{DANGER_TIME:.0f}초 이상 유지되었습니다.\n"
+            f"AI 신뢰도 {confidence * 100:.0f}% · "
+            f"방석 팽창을 시작했습니다.\n"
+            f"지금 바로 아기를 확인해 주세요."
+        )
+
+    else:
+
+        title = f"🚨🚨 [{count}번째 경고] 위험 상태 계속됨"
+
+        message = (
+            f"위험 자세가 {elapsed:.0f}초째 계속되고 있습니다!\n"
+            f"아직 해결되지 않았습니다.\n"
+            f"지금 즉시 아기를 확인해 주세요!"
+        )
+
+    try:
+
+        response = requests.post(
+
+            NTFY_URL,
+
+            json={
+
+                "topic": NTFY_TOPIC,
+
+                "title": title,
+
+                "message": message,
+
+                # 5 = 최고 우선순위 (화면 꺼져도 팝업 + 긴 진동)
+                "priority": 5,
+
+                "tags": ["rotating_light", "baby"]
+
+            },
+
+            timeout=3
+
+        )
+
+        if response.status_code == 200:
+
+            print(f"📱 폰 알림 전송 성공 ({count}번째)")
+
+        else:
+
+            print(
+                "⚠️ 폰 알림 전송 실패:",
+                response.status_code
+            )
+
+    except requests.exceptions.RequestException as e:
+
+        print(
+            "❌ 폰 알림 서버 연결 실패:",
+            e
+        )
+
+
+def send_push_alert(posture, confidence, count, elapsed):
+
+    # 알림 전송 때문에 YOLO 루프가 멈추지 않도록
+    # 별도 스레드에서 보낸다
+    threading.Thread(
+
+        target=_send_push,
+
+        args=(posture, confidence, count, elapsed),
+
+        daemon=True
+
+    ).start()
+
+
+# ==========================================
 # Flask 전송
 # ==========================================
 
@@ -140,7 +242,9 @@ def send_detection(
     posture,
     confidence,
     danger,
-    pump
+    pump,
+    warning=False,
+    elapsed=0.0
 ):
 
     try:
@@ -153,7 +257,11 @@ def send_detection(
 
             "danger": danger,
 
-            "pump": pump
+            "pump": pump,
+
+            "warning": warning,
+
+            "elapsed": round(elapsed, 1)
 
         }
 
@@ -238,6 +346,11 @@ last_danger_detection_time = None
 danger_confirmed = False
 
 pump_running = False
+
+# 반복 알림용
+last_push_time = None
+
+push_count = 0
 
 
 # ==========================================
@@ -405,6 +518,50 @@ while True:
                 danger_confirmed = True
 
 
+                # 위험 확정 순간 첫 번째 폰 알림
+                push_count = 1
+
+                last_push_time = current_time
+
+                send_push_alert(
+
+                    detected_posture,
+
+                    confidence,
+
+                    push_count,
+
+                    danger_duration
+
+                )
+
+
+            # ==================================
+            # 위험이 계속되면 10초마다 반복 알림
+            # ==================================
+
+            elif (
+                current_time - last_push_time
+                >= PUSH_REPEAT_INTERVAL
+            ):
+
+                push_count += 1
+
+                last_push_time = current_time
+
+                send_push_alert(
+
+                    detected_posture,
+
+                    confidence,
+
+                    push_count,
+
+                    danger_duration
+
+                )
+
+
             # ==================================
             # 위험 자세가 계속되는 동안
             # 펌프가 꺼져 있다면 ON
@@ -440,7 +597,11 @@ while True:
 
                 True,
 
-                pump_running
+                pump_running,
+
+                warning=True,
+
+                elapsed=danger_duration
 
             )
 
@@ -451,15 +612,21 @@ while True:
 
         else:
 
+            # 3초 전에는 "주의(warning)"만 보내고
+            # danger는 False로 보낸다
             send_detection(
 
                 detected_posture,
 
                 confidence,
 
-                True,
+                False,
 
-                False
+                False,
+
+                warning=True,
+
+                elapsed=danger_duration
 
             )
 
@@ -533,6 +700,11 @@ while True:
                     last_danger_detection_time = None
 
                     danger_confirmed = False
+
+                    # 반복 알림 초기화
+                    last_push_time = None
+
+                    push_count = 0
 
 
                     # Flask에 안전 상태 전달

@@ -22,6 +22,10 @@ latest_detection = {
 
     "pump": False,
 
+    "warning": False,
+
+    "elapsed": 0.0,
+
     "timestamp": None
 }
 
@@ -86,6 +90,22 @@ def detection():
     )
 
 
+    warning = bool(
+        data.get(
+            "warning",
+            False
+        )
+    )
+
+
+    elapsed = float(
+        data.get(
+            "elapsed",
+            0
+        )
+    )
+
+
     # ======================================
     # 최신 상태 저장
     # ======================================
@@ -99,6 +119,10 @@ def detection():
         "danger": danger,
 
         "pump": pump,
+
+        "warning": warning,
+
+        "elapsed": elapsed,
 
         "timestamp": datetime.now().isoformat()
     }
